@@ -1,0 +1,143 @@
+UserID,BCI,Behavior_State,Anomaly_Flag,Anomaly_Score,Alert_Priority,Recommendation
+00050F0E,0.1403099507707818,Stable,1,0.05686212463111617,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+006DD50A,-0.5100622378042304,Declining,1,0.05167327607646649,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+05D0E111,0.578327913028657,Improving,1,0.07984225456094535,Low,Behaviour is improving. Continue the current positive pattern.
+0637AF03,0.15988560829685816,Stable,1,0.056227128159333284,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+065F7507,-0.4799829249369395,Declining,1,0.06878900053143705,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+06AC3EDE,-0.04727332881825375,Stable,1,0.10007163556116228,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+08972814,0.20840249566680064,Stable,1,0.10520727019685572,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+089734B8,-0.9800848603074233,Declining,1,0.06832215729971441,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+0A30CA6E,-0.42099607535572797,Stable,1,0.08102246490256093,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+13FE5766,0.04577065137677994,Stable,1,0.0928669666777604,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+16AD6797,-0.34817560156761335,Stable,1,0.08118230473029997,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+173E67ED,-0.026222263509676467,Stable,-1,-0.06093926439006009,Medium,"Behaviour is stable overall, but an unusual pattern was detected. Review recent activity."
+1B48F5BA,-0.7414755022115052,Declining,1,0.033641584940636016,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+21EA54F8,0.8092645579484589,Improving,1,0.021378299968693282,Low,Behaviour is improving. Continue the current positive pattern.
+2926CF64,-0.3355918918522428,Stable,-1,-0.09156719794573581,Medium,"Behaviour is stable overall, but an unusual pattern was detected. Review recent activity."
+2A696D18,-1.4469341962584705,Declining,1,0.03026006927259417,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+2AE7F682,-0.8262198463493636,Declining,1,0.098300857757258,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+2B39FC2C,-0.7124763222940014,Declining,1,0.02357160236681366,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+2B76A25A,0.20142102862862865,Stable,1,0.07122231007241786,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+2BF883ED,0.004853618896919951,Stable,1,0.11110071884683753,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+2BF89F41,-0.09711646855674015,Stable,1,0.09469245531054699,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+2BF8A619,0.08809177966871243,Stable,1,0.05460345899973784,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+2BF8BAB5,0.05218086467092509,Stable,1,0.10354562495318503,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+2BF8C805,0.08997443188100046,Stable,1,0.04492948413042147,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+2DA4DA46,0.06041435424237194,Stable,1,0.096716770542212,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+33ED839D,-0.1114481830493403,Stable,1,0.09407198725586718,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+347FE229,0.5191248132439185,Improving,1,0.053448101440456586,Low,Behaviour is improving. Continue the current positive pattern.
+3787BEA1,0.76737075326046,Improving,1,0.061220725827629274,Low,Behaviour is improving. Continue the current positive pattern.
+37C40B2F,-0.7755951823373404,Declining,1,0.09569598207136454,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+38E0C847,-0.08049874554490602,Stable,1,0.01737870628946675,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+3CC940F5,0.38388974087473166,Stable,1,0.048783854205178445,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+3D1B4803,0.5186894059465212,Improving,1,0.10324652389416539,Low,Behaviour is improving. Continue the current positive pattern.
+3E0811B0,-0.04463089134958795,Stable,1,0.021420277428696788,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+3E683139,-2.012078207190135,Declining,1,0.04100104280451189,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+3E684389,0.28466671572497665,Stable,1,0.005958850532998439,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+3E685F25,-0.8602910231419415,Declining,1,0.0664870274487856,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+3E687AD1,0.690969183864842,Improving,1,0.11225471727329578,Low,Behaviour is improving. Continue the current positive pattern.
+3F72A9F3,0.5277373711191804,Improving,1,0.09312799598012106,Low,Behaviour is improving. Continue the current positive pattern.
+41529D67,-0.32565346443006327,Stable,1,0.061667277614936344,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+4283C0D0,0.24692150249040273,Stable,1,0.029404056775874488,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+43CE036B,0.40300503580968866,Improving,1,0.06758476866168056,Low,Behaviour is improving. Continue the current positive pattern.
+445C62DF,-0.5164560201825545,Declining,1,0.10082150757583686,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+481F3672,0.036646167321353104,Stable,1,0.08956492895272311,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+4AAE9BB2,1.6817706923579487,Improving,1,0.03385188564175051,Low,Behaviour is improving. Continue the current positive pattern.
+4E2B9146,1.0170632124147565,Improving,1,0.0556668941900364,Low,Behaviour is improving. Continue the current positive pattern.
+4E4846BE,0.37533789768894965,Stable,1,0.05642175162735952,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+4E485A12,0.8849649569149572,Improving,1,0.03543758621994386,Low,Behaviour is improving. Continue the current positive pattern.
+51A82B85,-0.2958558248023939,Stable,-1,-0.02541127555399364,Medium,"Behaviour is stable overall, but an unusual pattern was detected. Review recent activity."
+54EE2A89,-0.508347409986584,Declining,1,0.08667041736228437,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+579A8B88,-0.6470476582015011,Declining,1,0.05476097800505364,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+5F9F6279,-1.168096407489714,Declining,-1,-0.04809349746450681,High,Behaviour is declining and an unusual pattern was detected. Consider timely review and support.
+60663E96,-0.038017014576967996,Stable,1,0.07716038691659338,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+611C86D5,-0.21750053948228595,Stable,1,0.0874096130903726,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+612708C8,-0.1512057632536857,Stable,1,0.11151873840504584,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+61271464,0.09312335246865722,Stable,1,0.06104067262058843,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+61272D3C,1.352982427616457,Improving,1,0.0704564708131365,Low,Behaviour is improving. Continue the current positive pattern.
+61273190,0.17465004488490016,Stable,1,0.09117073526667174,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+612766D4,0.5969658909416258,Improving,1,0.09104690808413196,Low,Behaviour is improving. Continue the current positive pattern.
+67F45F22,-0.43310432347472644,Declining,1,0.07668081509887342,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+69AA2409,1.0253840511329186,Improving,1,0.026782775282096327,Low,Behaviour is improving. Continue the current positive pattern.
+6CF914F8,-0.8374644425643712,Declining,1,0.026248838947198372,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+72C883A2,0.5616634615202024,Improving,-1,-0.04243516204065706,Medium,"Behaviour is improving, but the pattern is unusual. Review recent activity for context."
+74B79FE8,0.24017254679198466,Stable,1,0.08509692182559025,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+74B7C8AC,0.14235947341249397,Stable,1,0.10518598346016828,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+74B7D400,1.0922782581894561,Improving,1,0.0797931947233469,Low,Behaviour is improving. Continue the current positive pattern.
+74B7F1F4,-1.3514284320258447,Declining,1,0.08429540461056756,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+775501BE,-0.2163453313341078,Stable,1,0.03818214773430062,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+777CB81A,-0.29146034444943963,Stable,1,0.06825180609569159,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+7B61F926,-0.5784331910269255,Declining,1,0.0932816479923338,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+7C6124C9,0.8141426210767608,Improving,1,0.07424378553357475,Low,Behaviour is improving. Continue the current positive pattern.
+7F84927E,-1.0178739172791849,Declining,1,0.06885935114314268,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+80213F7A,-0.7989372661209341,Declining,1,0.06355548610327777,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+80EF3C8F,1.9185958755275359,Improving,-1,-0.12876417267486545,Medium,"Behaviour is improving, but the pattern is unusual. Review recent activity for context."
+84101D4B,-0.17749201789154204,Stable,1,0.07381748138366817,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+88B88C8A,-1.094275026809588,Declining,1,0.061876350358648524,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+88B89026,-0.8148937249449606,Declining,1,0.03946544192387086,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+88B8B5D2,-0.5723221356239708,Declining,1,0.09441386743630298,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+935CB9FC,-0.23797522394420859,Stable,1,0.10170552711304987,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+94950CE3,-0.9906127972330011,Declining,1,0.08869552737688935,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+94CED848,-0.6100713585645341,Declining,1,0.022851070642608995,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+985AFF35,0.6362771675985343,Improving,-1,-0.0002014540580985713,Medium,"Behaviour is improving, but the pattern is unusual. Review recent activity for context."
+9CB99B43,-0.4171607951373387,Stable,1,0.08739948582278373,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+9D283E5E,0.6672400877635382,Improving,1,0.07308201967658012,Low,Behaviour is improving. Continue the current positive pattern.
+9D285042,1.2836544934181782,Improving,1,0.003392665292589525,Low,Behaviour is improving. Continue the current positive pattern.
+9D28691A,0.6982644562329576,Improving,1,0.09489413008367059,Low,Behaviour is improving. Continue the current positive pattern.
+9D2875B6,-1.036571515754753,Declining,1,0.010737491330315152,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+9EB92BD1,0.030228639100399246,Stable,1,0.07785238007663292,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+A143CD8D,0.11581255709126616,Stable,1,0.08865078966232132,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+A9B1C803,0.036489505986948806,Stable,1,0.08146596553745383,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+A9D91207,-0.024169160069204606,Stable,1,0.08422945378415347,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+AB944042,-0.16698946882074361,Stable,1,0.0948793980816991,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+ABDF3B2F,0.15047951767270895,Stable,1,0.08555205702270352,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+AF1628E9,-0.084056536594574,Stable,1,0.062178889569464324,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+AF83680E,0.19799938577493711,Stable,-1,-0.009307133994673478,Medium,"Behaviour is stable overall, but an unusual pattern was detected. Review recent activity."
+AFEBB20A,-0.3487625020732691,Stable,1,0.06541750786641332,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+B18E3C42,-0.8894481404640424,Declining,1,0.052686089004472636,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+B235D544,-0.15845162223642992,Stable,1,0.04354383723931199,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+B2BB60FE,1.3848133543651782,Improving,-1,-0.0031747263505733647,Medium,"Behaviour is improving, but the pattern is unusual. Review recent activity for context."
+B61C5DF6,0.02619501160428087,Stable,1,0.07764177269795924,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+BA2AB888,1.2097925124021731,Improving,1,0.027886128373165564,Low,Behaviour is improving. Continue the current positive pattern.
+BA837798,0.29645307686213973,Stable,1,0.08390414023264636,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+BBF9CFDB,-0.2950275439898266,Stable,1,0.06238422351764167,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+BC6BAE6F,0.9334223952106891,Improving,1,0.09746495733726634,Low,Behaviour is improving. Continue the current positive pattern.
+BD11162C,0.034698540107511174,Stable,1,0.10073867589182661,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+BE47C2E3,0.08759664509384142,Stable,1,0.10016870214099638,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+C1ADBCB4,0.5813687910653051,Improving,1,0.1078141838289805,Low,Behaviour is improving. Continue the current positive pattern.
+C22A59A5,-0.7463469463824303,Declining,1,0.07160743747490489,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+C26707AF,-0.30906454060842453,Stable,1,0.065272597201596,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+C2671B03,0.7746716780583097,Improving,1,0.07629346237947288,Low,Behaviour is improving. Continue the current positive pattern.
+C267225B,-0.63220911882142,Declining,1,0.06776992286699696,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+C2673EF7,-0.4048260322637905,Stable,1,0.057420245743870446,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+C26769B3,-1.3557423210324129,Declining,1,0.030528476967920826,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+C36CEDF1,0.3808015223431767,Stable,1,0.10454632518277601,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+C63FDD00,0.7314407500035199,Improving,1,0.021997628243292933,Low,Behaviour is improving. Continue the current positive pattern.
+C83FF0BD,-0.19318187429582245,Stable,-1,-0.06804661926364203,Medium,"Behaviour is stable overall, but an unusual pattern was detected. Review recent activity."
+CBDA4F2D,0.1988521398109394,Stable,1,0.08566378907506417,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+D2C5F64E,1.2190483017451041,Improving,-1,-0.14476283149925812,Medium,"Behaviour is improving, but the pattern is unusual. Review recent activity for context."
+D3E743C9,-0.4321964465180287,Declining,1,0.0050698222507205015,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+D447B3FC,-0.7982326158808657,Declining,1,0.038278612221481656,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+D7E3D0DC,0.6385408729951373,Improving,1,0.018091326397158825,Low,Behaviour is improving. Continue the current positive pattern.
+D7F7C7CB,0.39559256041005386,Improving,1,0.07288812621296037,Low,Behaviour is improving. Continue the current positive pattern.
+D7F7DB67,-0.041043000158370056,Stable,1,0.04686766154450722,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+D7F7FE93,0.4479146787155408,Improving,1,0.002020704092196235,Low,Behaviour is improving. Continue the current positive pattern.
+D92F8056,-0.1368909550229567,Stable,-1,-0.07542942493796972,Medium,"Behaviour is stable overall, but an unusual pattern was detected. Review recent activity."
+DEDB455E,0.1360332669187082,Stable,1,0.10549140551345781,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+E2058149,-0.28784691205202634,Stable,1,0.11057925658941431,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+E37F390A,-0.013254226409764208,Stable,1,0.025868117782341105,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+E597E0FD,0.17216127353053678,Stable,1,0.0018130865228871418,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+E7397CA8,0.6216596950390536,Improving,1,0.04731904463933978,Low,Behaviour is improving. Continue the current positive pattern.
+E908CA93,-0.6653599426762752,Declining,-1,-0.02059711836012096,High,Behaviour is declining and an unusual pattern was detected. Consider timely review and support.
+EB0D8430,0.3907217588932299,Stable,1,0.06439739348284723,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+EC5BFA62,-0.6249339296271619,Declining,1,0.07130962490439391,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+ED560D33,1.664613644412229,Improving,-1,-0.04211542766711668,Medium,"Behaviour is improving, but the pattern is unusual. Review recent activity for context."
+ED8FF4BE,-0.7600342913130214,Declining,1,0.09255177883191507,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+EDA58A0A,-0.9285426061035253,Declining,1,0.04316714025349505,Medium,Behaviour is declining. Monitor recent activity and consider appropriate support.
+EE9AAB27,-0.36288498173705175,Stable,1,0.09485234023549949,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+EFC42628,1.266208917398817,Improving,-1,-0.16209572747191742,Medium,"Behaviour is improving, but the pattern is unusual. Review recent activity for context."
+F81CEC88,0.008462295095103706,Stable,1,0.052543800473764835,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+F89100C7,-0.36053273765698646,Stable,1,0.07208982126558316,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+F898AC49,0.20339118110979157,Stable,1,0.06506714809329411,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.
+FA754C15,0.9782020687740272,Improving,1,0.08761717421791188,Low,Behaviour is improving. Continue the current positive pattern.
+FE2E4C85,-0.16669129844739414,Stable,1,0.06130733605158667,Low,Behaviour is stable. Maintain the current pattern and continue monitoring.

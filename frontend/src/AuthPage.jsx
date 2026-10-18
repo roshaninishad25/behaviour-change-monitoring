@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowRight, ShieldCheck, UserPlus } from "lucide-react";
+import { ArrowRight, ShieldCheck, UserPlus, UserRound } from "lucide-react";
 
 import "./AuthPage.css";
 
@@ -77,7 +77,10 @@ export default function AuthPage({ apiBaseUrl, onLogin }) {
       }
 
       if (mode === "login") {
-        onLogin(data.user);
+        if (data.user && data.access_token) {
+          localStorage.setItem("prj221_token", data.access_token);
+          onLogin(data.user, data.access_token);
+        }
       } else {
         setMode("login");
         setPassword("");
@@ -164,6 +167,38 @@ export default function AuthPage({ apiBaseUrl, onLogin }) {
                 : "Create your student account to access the monitoring workspace."}
             </p>
           </div>
+
+          {mode === "login" && (
+            <div className="auth-role-presets">
+              <span className="auth-presets-title">Quick Portal Access:</span>
+              <div className="auth-preset-buttons">
+                <button
+                  type="button"
+                  className="preset-btn student-preset"
+                  onClick={() => {
+                    setEmail("00050f0e@example.com");
+                    setPassword("Student123!");
+                    setError("");
+                  }}
+                >
+                  <UserRound size={15} />
+                  <span>Login as Student</span>
+                </button>
+                <button
+                  type="button"
+                  className="preset-btn faculty-preset"
+                  onClick={() => {
+                    setEmail("testfaculty@example.com");
+                    setPassword("Faculty123!");
+                    setError("");
+                  }}
+                >
+                  <ShieldCheck size={15} />
+                  <span>Login as Faculty</span>
+                </button>
+              </div>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit}>
 

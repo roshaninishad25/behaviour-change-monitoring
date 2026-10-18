@@ -1,3 +1,4 @@
+import { apiFetch } from "./api";
 import { useEffect, useState } from "react";
 import {
   ArrowLeft,
@@ -29,9 +30,9 @@ export default function FacultyStudentDetails({
 
       const [dashboardResponse, trendResponse, explanationResponse] =
         await Promise.all([
-          fetch(`${apiBaseUrl}/dashboard/${studentId}`),
-          fetch(`${apiBaseUrl}/trend/${studentId}`),
-          fetch(`${apiBaseUrl}/explanation/${studentId}`)
+          apiFetch(`${apiBaseUrl}/dashboard/${studentId}`),
+          apiFetch(`${apiBaseUrl}/trend/${studentId}`),
+          apiFetch(`${apiBaseUrl}/explanation/${studentId}`)
         ]);
 
       if (!dashboardResponse.ok) {

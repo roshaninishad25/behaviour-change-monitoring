@@ -1,3 +1,4 @@
+import { apiFetch } from "./api";
 import { useEffect, useMemo, useState } from "react";
 import {
   Search,
@@ -40,7 +41,7 @@ export default function FacultyDashboard({ apiBaseUrl }) {
       setLoading(true);
       setError("");
 
-      const response = await fetch(
+      const response = await apiFetch(
         `${apiBaseUrl}/faculty/students`
       );
 

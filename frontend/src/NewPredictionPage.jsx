@@ -1,3 +1,4 @@
+import { apiFetch } from "./api";
 import { useState } from "react";
 import "./NewPredictionPage.css";
 
@@ -188,7 +189,7 @@ export default function NewPredictionPage({ apiBaseUrl }) {
     try {
       setLoading(true);
 
-      const response = await fetch(`${apiBaseUrl}/predict`, {
+      const response = await apiFetch(`${apiBaseUrl}/predict`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

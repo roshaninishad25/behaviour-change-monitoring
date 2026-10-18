@@ -1,3 +1,4 @@
+import { apiFetch } from "./api";
 import { useEffect, useState } from "react";
 import {
   LayoutDashboard,
@@ -11,6 +12,8 @@ import {
   ArrowUpRight,
   ShieldCheck,
   Sparkles,
+  LogOut,
+  ArrowLeftRight,
 } from "lucide-react";
 
 import NewPredictionPage from "./NewPredictionPage";
@@ -570,7 +573,7 @@ function FacultyAlertsPage({ apiBaseUrl }) {
         setLoading(true);
         setError("");
 
-        const response = await fetch(
+        const response = await apiFetch(
           `${apiBaseUrl}/faculty/students`
         );
 
@@ -1050,7 +1053,8 @@ function AlertsPage({
   );
 }
 
-function ProfilePage({ user }) {
+function ProfilePage({ user, onLogout }) {
+  const safeUser = user || {};
   return (
     <div className="profile-page">
       <section className="page-heading">
@@ -1070,7 +1074,7 @@ function ProfilePage({ user }) {
 
         <div className="date-info">
           <span>Account role</span>
-          <strong>{user.role}</strong>
+          <strong>{safeUser.role || "User"}</strong>
         </div>
       </section>
 
@@ -1080,13 +1084,24 @@ function ProfilePage({ user }) {
             <UserRound size={30} />
           </div>
 
-          <h2>{user.name}</h2>
+          <h2>{safeUser.name || "User"}</h2>
 
-          <p className="profile-role">{user.role}</p>
+          <p className="profile-role">{safeUser.role || "Role"}</p>
 
           <div className="profile-id">
-            User ID: <strong>{user.user_id}</strong>
+            User ID: <strong>{safeUser.user_id || "-"}</strong>
           </div>
+
+          {onLogout && (
+            <button
+              className="profile-logout-button"
+              onClick={onLogout}
+              title="Sign Out"
+            >
+              <LogOut size={15} />
+              <span>Sign Out</span>
+            </button>
+          )}
         </div>
 
         <div className="panel profile-details-card">
@@ -1109,22 +1124,22 @@ function ProfilePage({ user }) {
           <div className="profile-details">
             <div className="profile-detail-row">
               <span>Name</span>
-              <strong>{user.name}</strong>
+              <strong>{safeUser.name || "-"}</strong>
             </div>
 
             <div className="profile-detail-row">
               <span>User ID</span>
-              <strong>{user.user_id}</strong>
+              <strong>{safeUser.user_id || "-"}</strong>
             </div>
 
             <div className="profile-detail-row">
               <span>Email</span>
-              <strong>{user.email}</strong>
+              <strong>{safeUser.email || "-"}</strong>
             </div>
 
             <div className="profile-detail-row">
               <span>Role</span>
-              <strong>{user.role}</strong>
+              <strong>{safeUser.role || "-"}</strong>
             </div>
           </div>
         </div>
@@ -1167,17 +1182,26 @@ function App() {
   const [currentUser, setCurrentUser] = useState(() => {
     try {
       const savedUser = localStorage.getItem("prj221_user");
-      return savedUser ? JSON.parse(savedUser) : null;
+      const savedToken = localStorage.getItem("prj221_token");
+      if (savedUser && savedToken) {
+        return JSON.parse(savedUser);
+      }
+      localStorage.removeItem("prj221_user");
+      localStorage.removeItem("prj221_token");
+      return null;
     } catch {
       return null;
     }
   });
 
-  const handleLogin = (user) => {
+  const handleLogin = (user, token) => {
     localStorage.setItem(
       "prj221_user",
       JSON.stringify(user)
     );
+    if (token) {
+      localStorage.setItem("prj221_token", token);
+    }
 
     setCurrentUser(user);
     setActivePage("Dashboard");
@@ -1185,6 +1209,7 @@ function App() {
 
   const handleLogout = () => {
     localStorage.removeItem("prj221_user");
+    localStorage.removeItem("prj221_token");
     setCurrentUser(null);
   };
 
@@ -1237,13 +1262,19 @@ function App() {
         // Dashboard
         // ------------------------------------------
 
-        const dashboardResponse = await fetch(
+        const dashboardResponse = await apiFetch(
           `${API_BASE_URL}/dashboard/${userId}`
         );
 
+        if (dashboardResponse.status === 401) {
+          handleLogout();
+          throw new Error("Session expired or unauthorized. Please log in again.");
+        }
+
         if (!dashboardResponse.ok) {
+          const errorData = await dashboardResponse.json().catch(() => ({}));
           throw new Error(
-            "Failed to fetch dashboard data"
+            errorData.detail || "Failed to fetch dashboard data"
           );
         }
 
@@ -1256,7 +1287,7 @@ function App() {
         // Behaviour trend
         // ------------------------------------------
 
-        const trendResponse = await fetch(
+        const trendResponse = await apiFetch(
           `${API_BASE_URL}/trend/${userId}`
         );
 
@@ -1278,7 +1309,7 @@ function App() {
         // SHAP explanation
         // ------------------------------------------
 
-        const explanationResponse = await fetch(
+        const explanationResponse = await apiFetch(
           `${API_BASE_URL}/explanation/${userId}`
         );
 
@@ -1334,8 +1365,23 @@ function App() {
 
   if (error || !dashboard) {
     return (
-      <div className="loading-screen">
+      <div className="loading-screen" style={{ display: "flex", flexDirection: "column", gap: "1rem", alignItems: "center" }}>
         <p>{error || "No dashboard data available."}</p>
+        <button
+          onClick={handleLogout}
+          style={{
+            padding: "8px 18px",
+            borderRadius: "6px",
+            border: "none",
+            backgroundColor: "#2563eb",
+            color: "#ffffff",
+            cursor: "pointer",
+            fontWeight: "600",
+            fontSize: "14px"
+          }}
+        >
+          Return to Login
+        </button>
       </div>
     );
   }
@@ -1433,6 +1479,26 @@ function App() {
               <span>AI services connected</span>
             </div>
           </div>
+
+          <div className="sidebar-actions">
+            <button
+              className="sidebar-action-btn switch-btn"
+              onClick={handleLogout}
+              title={isFaculty ? "Switch to Student Portal" : "Switch to Faculty Portal"}
+            >
+              <ArrowLeftRight size={15} />
+              <span>{isFaculty ? "Login as Student" : "Login as Faculty"}</span>
+            </button>
+
+            <button
+              className="sidebar-action-btn logout-btn"
+              onClick={handleLogout}
+              title="Sign Out"
+            >
+              <LogOut size={15} />
+              <span>Sign Out</span>
+            </button>
+          </div>
         </div>
       </aside>
 
@@ -1452,21 +1518,49 @@ function App() {
           </div>
 
           <div className="topbar-actions">
-            <button className="icon-button">
+            <button
+              className="role-switch-btn"
+              onClick={handleLogout}
+              title={isFaculty ? "Sign out and log in as Student" : "Sign out and log in as Faculty"}
+            >
+              <ArrowLeftRight size={14} />
+              <span>{isFaculty ? "Login as Student" : "Login as Faculty"}</span>
+            </button>
+
+            <button
+              className="icon-button"
+              title="Alerts"
+              onClick={() => setActivePage("Alerts")}
+            >
               <Bell size={19} />
               <span className="bell-dot" />
             </button>
 
-            <div className="topbar-user">
-              <div className="mini-avatar">U</div>
+            <div
+              className="topbar-user"
+              onClick={() => setActivePage("Profile")}
+              title="View Profile"
+            >
+              <div className="mini-avatar">
+                {currentUser?.name ? currentUser.name[0].toUpperCase() : "U"}
+              </div>
 
               <div className="topbar-user-info">
                 <strong>{currentUser.name}</strong>
-                <span>{currentUser.role}</span>
+                <span className={`role-badge ${isFaculty ? "badge-faculty" : "badge-student"}`}>
+                  {currentUser.role}
+                </span>
               </div>
-
-              <ChevronDown size={16} />
             </div>
+
+            <button
+              className="topbar-logout-btn"
+              onClick={handleLogout}
+              title="Sign Out"
+            >
+              <LogOut size={15} />
+              <span>Sign Out</span>
+            </button>
           </div>
         </header>
 
@@ -1491,7 +1585,10 @@ function App() {
               apiBaseUrl={API_BASE_URL}
             />
           ) : activePage === "Profile" ? (
-            <ProfilePage user={profile || dashboard.user} />
+            <ProfilePage
+              user={profile || dashboard?.user || currentUser}
+              onLogout={handleLogout}
+            />
           ) : (
             <>
               <section className="page-heading">

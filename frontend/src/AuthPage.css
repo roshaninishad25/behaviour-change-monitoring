@@ -183,6 +183,66 @@
   cursor: pointer;
 }
 
+/* Quick Role Presets */
+.auth-role-presets {
+  margin-bottom: 20px;
+  padding: 13px 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+.auth-presets-title {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #64748b;
+  margin-bottom: 10px;
+}
+
+.auth-preset-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.preset-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.preset-btn.student-preset {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+}
+
+.preset-btn.student-preset:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+
+.preset-btn.faculty-preset {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #15803d;
+}
+
+.preset-btn.faculty-preset:hover {
+  background: #dcfce7;
+  border-color: #86efac;
+}
+
 @media (max-width: 850px) {
   .auth-page {
     padding: 18px;

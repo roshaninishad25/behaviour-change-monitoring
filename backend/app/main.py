@@ -1,5 +1,6 @@
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel, EmailStr
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,6 +16,53 @@ import hashlib
 import secrets
 
 from backend.app.database import get_connection
+from datetime import datetime, timedelta, timezone
+import os
+import jwt
+from dotenv import load_dotenv
+
+load_dotenv()
+
+JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
+JWT_ALGORITHM = 'HS256'
+security = HTTPBearer(auto_error=False)
+
+def create_access_token(user_id: str, role: str):
+    if not JWT_SECRET_KEY:
+        raise HTTPException(status_code=500, detail='Authentication is not configured.')
+    payload = {
+        'sub': str(user_id),
+        'role': str(role),
+        'exp': datetime.now(timezone.utc) + timedelta(hours=8),
+    }
+    return jwt.encode(payload, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
+
+def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    if credentials is None or not JWT_SECRET_KEY:
+        raise HTTPException(status_code=401, detail='Authentication required.', headers={'WWW-Authenticate': 'Bearer'})
+    try:
+        payload = jwt.decode(credentials.credentials, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
+        user_id = payload.get('sub')
+        role = payload.get('role')
+        if not user_id or not role:
+            raise jwt.InvalidTokenError('Missing user or role')
+        return {'user_id': str(user_id), 'role': str(role)}
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail='Invalid or expired token.', headers={'WWW-Authenticate': 'Bearer'})
+
+def authorize_user_path(user_id: str, current_user: dict = Depends(get_current_user)):
+    role = current_user['role'].lower()
+    if role == 'faculty':
+        return current_user
+    if role in ('student', 'user') and current_user['user_id'] == str(user_id):
+        return current_user
+    raise HTTPException(status_code=403, detail='You cannot access this student record.')
+
+def require_faculty(current_user: dict = Depends(get_current_user)):
+    if current_user['role'].lower() != 'faculty':
+        raise HTTPException(status_code=403, detail='Faculty access required.')
+    return current_user
+
 
 # --------------------------------------------------
 # Load ML model and feature information
@@ -170,7 +218,7 @@ def root():
 # --------------------------------------------------
 
 @app.get("/users/{user_id}")
-def get_user(user_id: str):
+def get_user(user_id: str, current_user: dict = Depends(authorize_user_path)):
 
     conn = get_connection()
 
@@ -216,7 +264,7 @@ def get_user(user_id: str):
 # --------------------------------------------------
 
 @app.get("/behavior/{user_id}")
-def get_behavior(user_id: str):
+def get_behavior(user_id: str, current_user: dict = Depends(authorize_user_path)):
 
     conn = get_connection()
 
@@ -286,7 +334,7 @@ def get_behavior(user_id: str):
 # --------------------------------------------------
 
 @app.get("/dashboard/{user_id}")
-def get_dashboard(user_id: str):
+def get_dashboard(user_id: str, current_user: dict = Depends(authorize_user_path)):
 
     conn = get_connection()
 
@@ -453,7 +501,7 @@ def get_dashboard(user_id: str):
 # --------------------------------------------------
 
 @app.get("/trend/{user_id}")
-def get_trend(user_id: str):
+def get_trend(user_id: str, current_user: dict = Depends(authorize_user_path)):
 
     conn = get_connection()
 
@@ -517,7 +565,7 @@ def get_trend(user_id: str):
 # --------------------------------------------------
 
 @app.get("/anomaly/{user_id}")
-def get_anomaly(user_id: str):
+def get_anomaly(user_id: str, current_user: dict = Depends(authorize_user_path)):
 
     conn = get_connection()
 
@@ -563,7 +611,7 @@ def get_anomaly(user_id: str):
 # --------------------------------------------------
 
 @app.get("/predict/{user_id}")
-def get_prediction(user_id: str):
+def get_prediction(user_id: str, current_user: dict = Depends(authorize_user_path)):
 
     conn = get_connection()
 
@@ -609,7 +657,7 @@ def get_prediction(user_id: str):
 # --------------------------------------------------
 
 @app.get("/explanation/{user_id}")
-def get_explanation(user_id: str):
+def get_explanation(user_id: str, current_user: dict = Depends(authorize_user_path)):
 
     conn = get_connection()
 
@@ -778,7 +826,7 @@ def get_explanation(user_id: str):
 # --------------------------------------------------
 
 @app.get("/recommendation/{user_id}")
-def get_recommendation(user_id: str):
+def get_recommendation(user_id: str, current_user: dict = Depends(authorize_user_path)):
 
     conn = get_connection()
 
@@ -823,7 +871,7 @@ def get_recommendation(user_id: str):
 # --------------------------------------------------
 
 @app.get("/alert/{user_id}")
-def get_alert(user_id: str):
+def get_alert(user_id: str, current_user: dict = Depends(authorize_user_path)):
 
     conn = get_connection()
 
@@ -868,7 +916,7 @@ def get_alert(user_id: str):
 # --------------------------------------------------
 
 @app.post("/predict")
-def predict_new_user(request: PredictionRequest):
+def predict_new_user(request: PredictionRequest, current_user: dict = Depends(require_faculty)):
 
     # --------------------------------------------------
     # Validate number of behavioural periods
@@ -1090,7 +1138,7 @@ def predict_new_user(request: PredictionRequest):
 # --------------------------------------------------
 
 @app.get("/faculty/students")
-def get_faculty_students():
+def get_faculty_students(current_user: dict = Depends(require_faculty)):
 
     conn = get_connection()
 
@@ -1328,6 +1376,8 @@ def login_user(request: LoginRequest):
 
     return {
         "message": "Login successful.",
+        "access_token": create_access_token(str(user_id), role),
+        "token_type": "bearer",
         "user": {
             "user_id": user_id,
             "name": name,
@@ -1338,7 +1388,7 @@ def login_user(request: LoginRequest):
 
 
 @app.post("/behavior")
-def create_behavior(record: BehaviourRecordCreate):
+def create_behavior(record: BehaviourRecordCreate, current_user: dict = Depends(require_faculty)):
     connection = None
     cursor = None
 

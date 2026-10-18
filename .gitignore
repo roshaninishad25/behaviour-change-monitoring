@@ -1,4 +1,4 @@
-﻿# Logs
+# Logs
 logs/
 *.log
 npm-debug.log*
@@ -40,3 +40,4 @@ htmlcov/
 
 # Local development
 *.sqlite3
+backups/

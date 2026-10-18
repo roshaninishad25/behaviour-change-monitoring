@@ -1,3 +1,4 @@
+import { apiFetch } from "./api";
 import { useEffect, useMemo, useState } from "react";
 import {
   Users,
@@ -21,7 +22,7 @@ export default function FacultyOverview({ apiBaseUrl }) {
       setLoading(true);
       setError("");
 
-      const response = await fetch(
+      const response = await apiFetch(
         `${apiBaseUrl}/faculty/students`
       );
 

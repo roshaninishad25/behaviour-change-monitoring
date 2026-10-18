@@ -206,6 +206,49 @@ button {
   font-size: 10px;
 }
 
+.sidebar-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.sidebar-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sidebar-action-btn.switch-btn {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+}
+
+.sidebar-action-btn.switch-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.sidebar-action-btn.logout-btn {
+  background: #fef2f2;
+  border: 1px solid #fee2e2;
+  color: #dc2626;
+}
+
+.sidebar-action-btn.logout-btn:hover {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
 
 /* =========================================
    MAIN
@@ -338,6 +381,91 @@ button {
 
   color: #4b5565;
   cursor: pointer;
+}
+
+.role-switch-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  color: #1e293b;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.role-switch-btn:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.topbar-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.topbar-logout-btn:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #b91c1c;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.role-badge.badge-faculty {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.role-badge.badge-student {
+  background: #eff6ff;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+}
+
+.profile-logout-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 9px 16px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.profile-logout-button:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #b91c1c;
 }
 
 

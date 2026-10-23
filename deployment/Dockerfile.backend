@@ -1,0 +1,42 @@
+# PRJ_221 FastAPI Backend Production Dockerfile
+FROM python:3.11-slim
+
+# Prevent Python from writing .pyc files and enable unbuffered logging
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV MPLCONFIGDIR=/tmp/mpl_cache
+ENV PYTHONPATH=/app
+
+WORKDIR /app
+
+# Install system dependencies needed for compiling packages and PostgreSQL drivers
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Copy application code, models, and data
+COPY backend/ ./backend/
+COPY models/ ./models/
+COPY data/ ./data/
+
+# Create non-root user for security
+RUN useradd -m -u 1000 appuser && \
+    mkdir -p /tmp/mpl_cache && \
+    chown -R appuser:appuser /app /tmp/mpl_cache
+
+USER appuser
+
+EXPOSE 8000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
+    CMD curl -f http://localhost:8000/ || exit 1
+
+CMD ["uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]

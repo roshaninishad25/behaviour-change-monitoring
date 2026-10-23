@@ -1,30 +1,23 @@
+import os
+import sys
 import pandas as pd
-import psycopg2
 
-# -----------------------------
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
+from backend.app.database import get_connection
+
 # 1. Load dataset
-# -----------------------------
-csv_path = r"D:\PRJ_221\data\raw\LongitudinalEngagement.csv"
-
+csv_path = os.path.join(PROJECT_ROOT, "data", "raw", "LongitudinalEngagement.csv")
 df = pd.read_csv(csv_path)
-
 print(f"Records found: {len(df)}")
 
-# -----------------------------
-# 2. Connect to PostgreSQL
-# -----------------------------
-conn = psycopg2.connect(
-    host="localhost",
-    port=5432,
-    database="prj_221",
-    user="postgres"
-)
-
+# 2. Connect to database
+conn = get_connection()
 cursor = conn.cursor()
 
-# -----------------------------
 # 3. Insert behaviour records
-# -----------------------------
 insert_query = """
 INSERT INTO behaviour_records (
     user_id,
@@ -52,7 +45,6 @@ ON CONFLICT (user_id, sequence) DO NOTHING;
 """
 
 for _, row in df.iterrows():
-
     cursor.execute(
         insert_query,
         (
@@ -74,20 +66,8 @@ for _, row in df.iterrows():
         )
     )
 
-# -----------------------------
-# 4. Save changes
-# -----------------------------
 conn.commit()
-
-print("Behaviour records imported successfully.")
-
-# -----------------------------
-# 5. Verify count
-# -----------------------------
-cursor.execute("SELECT COUNT(*) FROM behaviour_records;")
-count = cursor.fetchone()[0]
-
-print(f"Behaviour records currently in database: {count}")
-
 cursor.close()
 conn.close()
+
+print("Behaviour records inserted successfully into database.")

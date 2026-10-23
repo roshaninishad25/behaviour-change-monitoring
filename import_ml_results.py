@@ -1,30 +1,23 @@
+import os
+import sys
 import pandas as pd
-import psycopg2
 
-# -----------------------------
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
+from backend.app.database import get_connection
+
 # 1. Load ML decision results
-# -----------------------------
-csv_path = r"D:\PRJ_221\data\processed\decision_results.csv"
-
+csv_path = os.path.join(PROJECT_ROOT, "data", "processed", "decision_results.csv")
 df = pd.read_csv(csv_path)
-
 print(f"ML result records found: {len(df)}")
 
-# -----------------------------
-# 2. Connect to PostgreSQL
-# -----------------------------
-conn = psycopg2.connect(
-    host="localhost",
-    port=5432,
-    database="prj_221",
-    user="postgres"
-)
-
+# 2. Connect to database
+conn = get_connection()
 cursor = conn.cursor()
 
-# -----------------------------
-# 3. Insert results
-# -----------------------------
+# 3. Insert queries
 prediction_query = """
 INSERT INTO predictions (
     user_id,
@@ -60,54 +53,21 @@ VALUES (%s, %s);
 """
 
 for _, row in df.iterrows():
+    uid = str(row["UserID"])
+    bci = None if pd.isna(row["BCI"]) else float(row["BCI"])
+    b_state = str(row["Behavior_State"])
+    a_flag = int(row["Anomaly_Flag"])
+    a_score = float(row["Anomaly_Score"])
+    rec = str(row["Recommendation"])
+    prio = str(row["Priority"])
 
-    user_id = str(row["UserID"])
-    bci = float(row["BCI"])
-    behavior_state = str(row["Behavior_State"])
-    anomaly_flag = int(row["Anomaly_Flag"])
-    anomaly_score = float(row["Anomaly_Score"])
-    recommendation = str(row["Recommendation"])
-    priority = str(row["Alert_Priority"])
+    cursor.execute(prediction_query, (uid, bci, b_state))
+    cursor.execute(anomaly_query, (uid, a_flag, a_score))
+    cursor.execute(recommendation_query, (uid, rec))
+    cursor.execute(alert_query, (uid, prio))
 
-    cursor.execute(
-        prediction_query,
-        (user_id, bci, behavior_state)
-    )
-
-    cursor.execute(
-        anomaly_query,
-        (user_id, anomaly_flag, anomaly_score)
-    )
-
-    cursor.execute(
-        recommendation_query,
-        (user_id, recommendation)
-    )
-
-    cursor.execute(
-        alert_query,
-        (user_id, priority)
-    )
-
-# -----------------------------
-# 4. Save changes
-# -----------------------------
 conn.commit()
-
-print("ML results imported successfully.")
-
-# -----------------------------
-# 5. Verify counts
-# -----------------------------
-for table in [
-    "predictions",
-    "anomalies",
-    "recommendations",
-    "alerts"
-]:
-    cursor.execute(f"SELECT COUNT(*) FROM {table};")
-    count = cursor.fetchone()[0]
-    print(f"{table}: {count}")
-
 cursor.close()
 conn.close()
+
+print("ML decision results inserted successfully into database.")

@@ -62,7 +62,25 @@ export default function FacultyDashboard({ apiBaseUrl }) {
   };
 
   useEffect(() => {
-    fetchStudents();
+    let isMounted = true;
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        setError("");
+        const response = await apiFetch(`${apiBaseUrl}/faculty/students`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch faculty student data.");
+        }
+        const data = await response.json();
+        if (isMounted) setStudents(data);
+      } catch (err) {
+        if (isMounted) setError(err.message || "Unable to connect to the backend.");
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+    loadData();
+    return () => { isMounted = false; };
   }, [apiBaseUrl]);
 
   const summary = useMemo(() => {

@@ -8,7 +8,6 @@ import {
   UserRound,
   Menu,
   X,
-  ChevronDown,
   ArrowUpRight,
   ShieldCheck,
   Sparkles,
@@ -1219,7 +1218,6 @@ function App() {
   const [dashboard, setDashboard] = useState(null);
   const [trend, setTrend] = useState([]);
   const [explanation, setExplanation] = useState([]);
-  const [profile, setProfile] = useState(null);
   const [selectedMetric, setSelectedMetric] =
     useState("session_count");
 
@@ -1266,11 +1264,8 @@ function App() {
           `${API_BASE_URL}/dashboard/${userId}`
         );
 
-        if (dashboardResponse.status === 401) {
-          handleLogout();
-          throw new Error("Session expired or unauthorized. Please log in again.");
-        }
-
+        // B4/B7 — 401 (expired/invalid token) is handled globally by apiFetch in
+        // api.js: it clears localStorage and reloads so AuthPage is shown.
         if (!dashboardResponse.ok) {
           const errorData = await dashboardResponse.json().catch(() => ({}));
           throw new Error(
@@ -1586,7 +1581,7 @@ function App() {
             />
           ) : activePage === "Profile" ? (
             <ProfilePage
-              user={profile || dashboard?.user || currentUser}
+              user={dashboard?.user || currentUser}
               onLogout={handleLogout}
             />
           ) : (

@@ -68,7 +68,44 @@ export default function FacultyStudentDetails({
   };
 
   useEffect(() => {
-    fetchDetails();
+    let isMounted = true;
+    const loadDetails = async () => {
+      try {
+        setLoading(true);
+        setError("");
+        const [dashboardResponse, trendResponse, explanationResponse] =
+          await Promise.all([
+            apiFetch(`${apiBaseUrl}/dashboard/${studentId}`),
+            apiFetch(`${apiBaseUrl}/trend/${studentId}`),
+            apiFetch(`${apiBaseUrl}/explanation/${studentId}`)
+          ]);
+
+        if (!dashboardResponse.ok) {
+          throw new Error("Failed to fetch student dashboard data.");
+        }
+        if (!trendResponse.ok) {
+          throw new Error("Failed to fetch student behaviour data.");
+        }
+        const dashboardData = await dashboardResponse.json();
+        const trendData = await trendResponse.json();
+        let explanationData = [];
+        if (explanationResponse.ok) {
+          const expRes = await explanationResponse.json();
+          explanationData = expRes.explanations || [];
+        }
+        if (isMounted) {
+          setDashboard(dashboardData);
+          setTrend(trendData);
+          setExplanation(explanationData);
+        }
+      } catch (err) {
+        if (isMounted) setError(err.message || "Unable to load student details.");
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+    loadDetails();
+    return () => { isMounted = false; };
   }, [apiBaseUrl, studentId]);
 
   if (loading) {

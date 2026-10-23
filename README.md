@@ -23,19 +23,23 @@ By modeling longitudinal student interaction data (course access, lecture views,
 
 ### 🎓 1. Student Portal
 - **Real-Time Behavioral Dashboard:** Displays current Behavioral State (*Improving*, *Stable*, or *Declining*) and Behavioral Change Index (BCI score).
-- **Anomaly Monitoring:** Flags sudden deviations in engagement or irregular activity patterns.
+- **Anomaly Monitoring:** Flags sudden deviations in engagement or irregular activity patterns using an Isolation Forest model.
 - **Sequential Trend Analysis:** Interactive visual charts tracking 8 distinct metrics across sequential course periods (Session count, active days, video views, forum contributions, final grade).
 - **Explainable AI (SHAP):** Visual breakdown of top behavioral factors contributing to the student's predicted trajectory.
 - **Actionable Recommendations & Alerts:** Automated, rule-based feedback guiding students on study habits and resource utilization.
+- **Strict Data Ownership (Anti-IDOR):** Students can only access their own records. Changing the user ID parameter returns `403 Forbidden`.
 
 ### 🏫 2. Faculty Portal
-- **Cohort Overview:** Comprehensive view of the entire student cohort (145+ students) with distribution of behavioral states and risk categories (*Low*, *Medium*, *High*).
+- **Cohort Overview:** Comprehensive view of the entire student cohort with distribution of behavioral states and risk categories (*Low*, *Medium*, *High*).
 - **Student Inspection & Filtering:** Search, filter, and inspect detailed profiles, behavioral history, and anomaly history for any individual student.
-- **Manual Assessment Simulator:** Interactive tool allowing faculty to input hypothetical multi-sequence student behavioral data to run on-demand predictions and SHAP explanations.
+- **Elevated Monitoring Alerts:** Dedicated alerts queue for students requiring immediate review.
+- **Manual Assessment Simulator:** Interactive tool allowing faculty to input multi-sequence student behavioral data to run on-demand predictions and SHAP explanations.
 
 ### 🔐 3. Security & Architecture
-- **JWT Role-Based Access Control:** Role-restricted API endpoints with bearer token validation ensuring students only access their own records while faculty can view cohort-level analytics.
-- **Instant Portal Switching:** Fast switching between Student and Faculty viewpoints with persistent session handling.
+- **JWT Role-Based Access Control:** Role-restricted API endpoints with bearer token validation.
+- **Secure Password Hashing:** PBKDF2-HMAC-SHA256 with 310,000 iterations and constant-time digest comparison.
+- **Gated Faculty Registration:** Faculty signup is strictly protected via server-side `FACULTY_INVITE_CODE`.
+- **Identity Derivation:** User identities are derived strictly from cryptographically signed JWT claims, not client-supplied query parameters.
 
 ---
 
@@ -85,6 +89,7 @@ By modeling longitudinal student interaction data (course access, lecture views,
 | **Backend** | REST API & Auth | FastAPI, Uvicorn, PyJWT, Pydantic, Python 3.10+ |
 | **Database** | Relational Store | PostgreSQL 14+, Psycopg2 |
 | **Machine Learning**| Analytics & Models | Scikit-Learn (Random Forest, Isolation Forest), SHAP, NumPy, Pandas, Joblib |
+| **Testing** | Automated Quality Assurance | Python `unittest` suite (20 tests), ESLint, Vite build pipeline |
 
 ---
 
@@ -99,10 +104,10 @@ PRJ_221/
 │       └── main.py                   # FastAPI endpoints, auth & ML inference pipeline
 ├── frontend/
 │   ├── src/
-│   │   ├── api.js                    # Authenticated fetch wrapper (auto JWT attachment)
+│   │   ├── api.js                    # Authenticated fetch wrapper (auto JWT attachment & 401 handler)
 │   │   ├── App.jsx                   # Core router, student dashboard & layout
 │   │   ├── App.css                   # Application styling
-│   │   ├── AuthPage.jsx              # Login & registration with quick portal presets
+│   │   ├── AuthPage.jsx              # Login & registration with quick portal presets & invite codes
 │   │   ├── FacultyOverview.jsx       # Faculty cohort dashboard & risk metrics
 │   │   ├── FacultyDashboard.jsx      # Student directory & management
 │   │   ├── FacultyStudentDetails.jsx # Detailed student drill-down view
@@ -113,7 +118,20 @@ PRJ_221/
 │   ├── random_forest_v2.pkl          # Trained Random Forest classifier
 │   ├── isolation_forest.pkl          # Trained Isolation Forest anomaly detector
 │   ├── anomaly_scaler.pkl            # Feature standardizer for anomaly scoring
-│   └── feature_columns.json          # Expected feature order & definitions
+│   └── feature_columns.json          # Expected 44-feature order & definitions
+├── tests/                            # Automated test suite (Phase E)
+│   ├── test_backend_api.py           # 12 API & RBAC endpoint tests
+│   ├── test_ml_pipeline.py           # 5 ML inference and feature transformation tests
+│   ├── test_database.py              # 2 Database schema and connection tests
+│   └── test_e2e.py                   # 1 Full-lifecycle end-to-end integration test
+├── scripts/
+│   ├── health_check.py               # Production system readiness validator
+│   └── seed_database.py              # Unified database migration and seeding
+├── deployment/                       # Cloud & container deployment assets (Phase G)
+│   ├── Dockerfile.backend            # Production backend container definition
+│   ├── Dockerfile.frontend           # Production frontend Nginx container definition
+│   ├── docker-compose.yml            # Multi-service local/cloud orchestration
+│   └── nginx/default.conf            # Reverse proxy configuration
 ├── data/
 │   ├── raw/
 │   │   └── LongitudinalEngagement.csv # Simulated student sequence dataset
@@ -121,6 +139,7 @@ PRJ_221/
 │       └── decision_results.csv
 ├── docs/
 │   └── ml_methodology.md             # Theoretical & mathematical documentation
+├── requirements.txt                  # Pinned Python production dependencies
 ├── .env.example                      # Template environment variables file
 ├── .gitignore
 └── README.md
@@ -131,100 +150,75 @@ PRJ_221/
 ## ⚡ Quick Start Guide
 
 ### 1. Prerequisites
-Ensure you have the following installed:
-* **Python 3.10 or higher**
+* **Python 3.10+** (with virtual environment `.venv`)
 * **Node.js 18+ and npm**
-* **PostgreSQL 14 or higher**
+* **PostgreSQL 14+**
 
 ---
 
-### 2. Database Configuration
-1. Open PostgreSQL (via pgAdmin, psql, or your terminal) and create the database:
-   ```sql
-   CREATE DATABASE prj_221;
-   ```
-2. Verify that your database tables are created:
-   * `users`
-   * `behaviour_records`
-   * `predictions`
-   * `anomalies`
-   * `recommendations`
-   * `alerts`
+### 2. Environment Setup
 
----
-
-### 3. Environment Variables Setup
-Create a `.env` file in the root directory:
-
+Create `.env` in the root directory:
 ```env
-# Database Configuration
 DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=prj_221
 DB_USER=postgres
 DB_PASSWORD=your_postgres_password
 
-# Backend & Security
 VITE_API_BASE_URL=http://127.0.0.1:8000
-VITE_USER_ID=00050F0E
 JWT_SECRET_KEY=your_secure_random_jwt_secret_key
-```
-
-And in `frontend/.env`:
-```env
-VITE_API_BASE_URL=http://127.0.0.1:8000
-VITE_USER_ID=00050F0E
+FACULTY_INVITE_CODE=faculty_secret_passphrase
 ```
 
 ---
 
-### 4. Running the Backend (FastAPI)
+### 3. Automated System Health Check & Test Suite (Phase E)
 
-1. Open a terminal in the root `PRJ_221` directory.
-2. Activate your Python virtual environment:
-   ```powershell
-   # Windows PowerShell
-   .\.venv\Scripts\Activate.ps1
-   ```
-3. Start the FastAPI server using Uvicorn:
-   ```powershell
-   uvicorn backend.app.main:app --reload --host 127.0.0.1 --port 8000
-   ```
-4. Verify the backend:
-   * **API Root:** [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-   * **Interactive Swagger UI:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+Run the comprehensive health check:
+```powershell
+.venv\Scripts\python.exe scripts/health_check.py
+```
+
+Run the automated test suite (20 tests covering ML, Backend, DB, and E2E):
+```powershell
+.venv\Scripts\python.exe -m unittest discover tests
+```
+
+Run frontend linting and build checks:
+```powershell
+cd frontend
+npm run lint
+npm run build
+cd ..
+```
 
 ---
 
-### 5. Running the Frontend (React + Vite)
+### 4. Running the Development Servers
 
-1. Open a second terminal window and navigate to the frontend folder:
-   ```powershell
-   cd frontend
-   ```
-2. Install frontend dependencies (if first time):
-   ```powershell
-   npm install
-   ```
-3. Start the Vite development server:
-   ```powershell
-   npm run dev
-   ```
-4. Open the application in your browser:
-   👉 **[http://localhost:5173/](http://localhost:5173/)**
+**Backend:**
+```powershell
+.venv\Scripts\uvicorn backend.app.main:app --reload --host 127.0.0.1 --port 8000
+```
+* **API Root:** [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+* **Interactive Swagger UI:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+
+**Frontend:**
+```powershell
+cd frontend
+npm run dev
+```
+* **Web Portal:** [http://localhost:5173/](http://localhost:5173/)
 
 ---
 
 ## 🔑 Demo Access & Login Credentials
 
-The web application includes **Quick Portal Access** buttons on the login screen to allow one-click demo access:
-
 | Role | Email | Password | Features Accessible |
 | :--- | :--- | :--- | :--- |
 | **Student** | `00050f0e@example.com` | `Student123!` | Personal dashboard, longitudinal trends (8 periods), anomaly scores, SHAP explanations, recommendations |
-| **Faculty** | `testfaculty@example.com` | `Faculty123!` | 145+ student cohort analytics, risk distributions, student profile inspector, manual sequence assessment simulator |
-
-> *Tip: You can also use the **Register** tab on the login screen to create a new custom student account at any time.*
+| **Faculty** | `testfaculty@example.com` | `Faculty123!` | Cohort analytics, risk distributions, student profile inspector, manual sequence assessment simulator |
 
 ---
 
@@ -234,37 +228,17 @@ All secured endpoints require the header: `Authorization: Bearer <access_token>`
 
 | Method | Endpoint | Access | Description |
 | :--- | :--- | :--- | :--- |
-| `POST` | `/login` | Public | Authenticates credentials and returns JWT token & user profile |
-| `POST` | `/register` | Public | Registers a new student account |
-| `GET` | `/dashboard/{user_id}` | Student / Faculty | Retrieves latest prediction, anomaly score, recommendation & alert |
-| `GET` | `/trend/{user_id}` | Student / Faculty | Fetches longitudinal metrics across sequential periods |
-| `GET` | `/explanation/{user_id}`| Student / Faculty | Returns SHAP feature attribution weights for explainable AI |
-| `GET` | `/users/{user_id}` | Student / Faculty | Fetches student profile data |
+| `POST` | `/auth/login` | Public | Authenticates credentials and returns JWT token & user profile |
+| `POST` | `/auth/signup` | Public | Registers a new student account (role: Student) |
+| `POST` | `/auth/signup/faculty` | Invite Code | Registers a faculty account using `FACULTY_INVITE_CODE` |
+| `GET` | `/auth/me` | Authenticated | Derives current user identity directly from verified JWT |
+| `GET` | `/dashboard/{user_id}` | Student (Self) / Faculty | Retrieves latest prediction, anomaly score, recommendation & alert |
+| `GET` | `/trend/{user_id}` | Student (Self) / Faculty | Fetches longitudinal metrics across sequential periods |
+| `GET` | `/explanation/{user_id}`| Student (Self) / Faculty | Returns SHAP feature attribution weights for explainable AI |
+| `GET` | `/users/{user_id}` | Student (Self) / Faculty | Fetches student profile data |
 | `GET` | `/faculty/students` | Faculty Only | Retrieves summary metrics and status for all cohort students |
 | `POST` | `/predict` | Faculty Only | Evaluates manual multi-sequence behavioral inputs |
-
----
-
-## 🔬 Machine Learning Methodology Summary
-
-1. **Dataset:** 1,136 longitudinal engagement records spanning 142 simulated students over 8 course sequences.
-2. **Behavioral Change Index (BCI):** Calculates the mean standardized difference in 11 activity metrics between Sequence 1 and Sequence 8.
-3. **Class Stratification:**
-   - **Declining:** BCI < 25th percentile
-   - **Stable:** 25th percentile ≤ BCI ≤ 75th percentile
-   - **Improving:** BCI > 75th percentile
-4. **Explainability:** TreeSHAP computes Shapley additive explanations to determine which specific metrics (e.g. video watch regularity, forum contributions, total duration) drove the prediction.
-
----
-
-## 🛠️ Common Troubleshooting
-
-- **`[WinError 10013]` Socket Permission Error:** Another process is holding port 8000. Stop existing uvicorn instances or terminate using PowerShell:
-  ```powershell
-  Get-Process -Name python, uvicorn -ErrorAction SilentlyContinue | Stop-Process -Force
-  ```
-- **Failed to fetch dashboard data (401 Unauthorized):** Ensure you are logged in. The frontend automatically handles and attaches JWT tokens via `apiFetch`. If the session was invalidated, click **Return to Login** or use the one-click demo login buttons.
-- **Database Connection Refused:** Verify that PostgreSQL service is running on port `5432` and that credentials in `.env` match your PostgreSQL password.
+| `POST` | `/behavior` | Faculty Only | Adds a new sequential behavioral observation for a student |
 
 ---
 

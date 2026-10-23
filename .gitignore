@@ -8,6 +8,9 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # Frontend dependencies and build output
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
 node_modules/
 dist/
 dist-ssr/
@@ -18,16 +21,19 @@ dist-ssr/
 venv/
 __pycache__/
 *.py[cod]
+*$py.class
 .pytest_cache/
 .coverage
 htmlcov/
+.mypy_cache/
 
 # Environment variables and secrets
 .env
 .env.*
 !.env.example
+!.env.production.example
 
-# Editor directories and files
+# Editor & OS files
 .vscode/*
 !.vscode/extensions.json
 .idea/
@@ -38,6 +44,8 @@ htmlcov/
 *.sln
 *.sw?
 
-# Local development
-*.sqlite3
+# Local development backups & scratch files
 backups/
+scratch/
+apply_jwt_patch.py
+*.sqlite3
